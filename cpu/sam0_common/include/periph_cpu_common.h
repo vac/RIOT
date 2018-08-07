@@ -241,6 +241,7 @@ typedef struct {
     gpio_mux_t clk_mux;     /**< alternate function for CLK pin (mux) */
     spi_misopad_t miso_pad; /**< pad to use for MISO line */
     spi_mosipad_t mosi_pad; /**< pad to use for MOSI and CLK line */
+    gpio_mode_t miso_mode;  /**< mode used for MISO pin */
 } spi_conf_t;
 /** @} */
 

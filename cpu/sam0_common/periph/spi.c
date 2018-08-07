@@ -103,8 +103,15 @@ void spi_init(spi_t bus)
 
 void spi_init_pins(spi_t bus)
 {
-    /* MISO must always have PD/PU, see #5968. This is a ~65uA difference */
-    gpio_init(spi_config[bus].miso_pin, GPIO_IN_PD);
+    /* MISO must always have PD/PU, see #5968. This is a ~65uA difference
+     * it is possible that there is external PD/PU resistor (on board) */
+    gpio_mode_t miso_mode = spi_config[bus].miso_mode;
+    if ((miso_mode != GPIO_IN) &&
+        (miso_mode != GPIO_IN_PD) &&
+        (miso_mode != GPIO_IN_PU)) {
+        miso_mode = GPIO_IN_PD;
+    }
+    gpio_init(spi_config[bus].miso_pin, miso_mode);
     gpio_init(spi_config[bus].mosi_pin, GPIO_OUT);
     gpio_init(spi_config[bus].clk_pin, GPIO_OUT);
     gpio_init_mux(spi_config[bus].miso_pin, spi_config[bus].miso_mux);
